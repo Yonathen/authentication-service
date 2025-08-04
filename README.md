@@ -1,4 +1,3 @@
-// filepath: README.md
 # Authentication Service
 
 A robust, production-ready authentication microservice built with Spring Boot, JWT, and PostgreSQL. This service provides secure user registration, login, and role-based access control for your microservices architecture.
