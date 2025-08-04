@@ -1,0 +1,40 @@
+services:
+
+  authentication-service:
+    image: authentication-service:latest
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - microservices-network
+    depends_on:
+      - gateway-service
+      - authentication-db
+      - eureka-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://authentication-db:5432/authentication_db
+      - SPRING_DATASOURCE_USERNAME=auth_db_user
+      - SPRING_DATASOURCE_PASSWORD=b7V!pQ2z@eL9xT1wS4rU
+
+  authentication-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: authentication_db
+      POSTGRES_USER: auth_db_user
+      POSTGRES_PASSWORD: b7V!pQ2z@eL9xT1wS4rU
+    volumes:
+      - authentication-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+    ports:
+      - "5433:5432"
+
+networks:
+  microservices-network:
+    driver: bridge
+
+volumes:
+  authentication-data:
